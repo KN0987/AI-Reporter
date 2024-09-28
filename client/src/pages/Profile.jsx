@@ -55,7 +55,7 @@ export default function Profile() {
                     <p>Password:</p>
                     <input type="password" id="password" placeholder="Change Password" className="border border-slate-200 rounded-lg p-3"/>
                     <p>Confirm Password:</p>
-                    <input type="password" id="confirm-password" placeholder="Confirm Password" className="border border-slate-200 rounded-lg p-3"/>
+                    <input type="password" id="confirmPassword" placeholder="Confirm Password" className="border border-slate-200 rounded-lg p-3"/>
                     <button className="bg-slate-700 text-white p-3 mt-2 rounded-lg uppercase hover:opacity-90 disabled:opacity-80">update</button>
                     <div className="flex flex-row justify-between">
                         <span className="text-red-700 cursor-pointer">Delete Account</span>
