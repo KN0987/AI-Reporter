@@ -28,7 +28,7 @@ export default function SignUp() {
     try{
       setLoading(true);
       setError(false);
-      const res = await fetch("/api/auth/signup", {
+      const res = await fetch("https://ai-summarizer-alpha-nine.vercel.app/api/auth/signup", {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',

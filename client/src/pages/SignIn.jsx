@@ -30,7 +30,7 @@ export default function SignIn() {
     event.preventDefault();
     try{
       dispatch(signInStart());
-      const res = await fetch("/api/auth/signin", {
+      const res = await fetch("https://ai-summarizer-alpha-nine.vercel.app/api/auth/signin", {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
