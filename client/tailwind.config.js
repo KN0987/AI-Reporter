@@ -9,6 +9,7 @@ export default {
       fontFamily: {
         fredoka: ["Fredoka", "sans-serif"],
         montserrat: ["Montserrat", "sans-serif"],
+        lobster: ["Lobster", "sans-serif"],
       }
     },
   },

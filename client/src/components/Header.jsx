@@ -1,7 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 import {useSelector} from "react-redux";
-import {logo} from "../assets";
 
 export default function Header() {
   const {currentUser} = useSelector((state) => state.user);
@@ -9,8 +8,7 @@ export default function Header() {
   return (
     <header className = "w-full flex justify-around items-center py-3 bg-white sticky top-0 z-50 shadow">
         <Link to="/">
-        
-        <img src={logo} alt="app logo" className="w-28 object-contain "/>
+        <span className="font-lobster text-orange-600 font-semibold text-5xl">Summarizer</span>
         </Link>
         <nav className="flex justify-between items-center flex-row">
         <ul>
@@ -20,7 +18,7 @@ export default function Header() {
             Account Details
             <div className="tooltip-arrow" data-popper-arrow></div>
             </div> 
-          </div>):(<li>Sign In</li>)}
+          </div>):""}
 
         </Link>
         </ul>
