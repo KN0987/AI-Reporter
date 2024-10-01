@@ -4,7 +4,8 @@ import dotenv from "dotenv";
 import userRoutes from "./routes/user.route.js";
 import authRoutes from "./routes/auth.route.js";
 import cookieParser from 'cookie-parser';
-
+import cors from "cors";
+import path from "path";
 
 dotenv.config();
 mongoose
@@ -15,8 +16,19 @@ mongoose
     .catch((err) => {
         console.log(err);
     });
-
+const __dirname = path.resolve();
+const corsOptions = {
+    origin: true, 
+    credentials: true, 
+};
 const app = express();
+
+app.use(express.static(path.join(__dirname, '/client/dist')));
+app.get('*', (req,res) => {
+    res.sendFile(path.join(__dirname, 'client', 'dist','index.html'));
+});
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
