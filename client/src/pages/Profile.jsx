@@ -137,7 +137,7 @@ export default function Profile() {
                     <p>Confirm Password:</p>
                     <input type="password" id="confirmPassword" placeholder="Confirm Password" className="border border-slate-200 rounded-lg p-3" onChange={handleChange}/>
                     {isPasswordChanged ?(doesPasswordMatch ? <p className="text-green-700">Password matched!</p> : <p className="text-red-700">Password does not match!</p>) : ""}
-                    <button className="bg-slate-700 text-white p-3 mt-2 rounded-lg uppercase hover:opacity-90 disabled:opacity-80">{loading ? "Loading...":"Update"}</button>
+                    <button className="bg-orange-600 text-white p-3 mt-2 rounded-lg uppercase hover:opacity-90 disabled:opacity-80">{loading ? "Loading...":"Update"}</button>
                     <div className="flex flex-row justify-between">
                         <span className="text-red-700 cursor-pointer" onClick={handleDeleteAccount}>Delete Account</span>
                         <span className="text-red-700 cursor-pointer" onClick={handleSignOut}>Sign out</span>

@@ -55,7 +55,7 @@ export default function SignUp() {
         <input type = "text" placeholder="Username"  name="username" className="w-3/4 p-3 rounded-lg border-2 border-[#d1d9e0b3]" onChange = {handleChange}/>
           <input type = "text" placeholder="Email"  name="email" className="w-3/4 p-3 rounded-lg border-2 border-[#d1d9e0b3]" onChange = {handleChange}/>
           <input type = "password" placeholder="Password" name="password" className="w-3/4 p-3 rounded-lg border-2 border-[#d1d9e0b3]" onChange = {handleChange}/>
-          <button disabled={loading} className="bg-slate-700 text-white rounded-lg w-3/4 h-8 hover:opacity-75 disabled:opacity-60">{loading ? 'Loading...':'Sign up'}</button>
+          <button disabled={loading} className="bg-orange-600 text-white rounded-lg w-3/4 h-8 hover:opacity-75 disabled:opacity-60">{loading ? 'Loading...':'Sign up'}</button>
           <OAuth />
           <div className="flex mt-4 gap-2">
           <p>Have an account?</p>
