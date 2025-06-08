@@ -5,7 +5,6 @@ import {app} from "../firebase";
 import {useDispatch} from "react-redux";
 import {updateUserStart, updateUserSuccess, updateUserFailure, deleteUserStart, deleteUserSuccess, deleteUserFailure, signOut } from "../redux/user/userSlice.js";
 
-
 export default function Profile() {
     const {currentUser, loading, error} = useSelector(state => state.user);
     const fileRef = useRef(null);
@@ -18,7 +17,6 @@ export default function Profile() {
     const [updateSucess, setUpdateSuccess] = useState(false);
     
     const dispatch = useDispatch();
-
 
     useEffect(() => {
         if(image){
@@ -49,7 +47,6 @@ export default function Profile() {
         const { id, value } = event.target;
         setFormData({ ...formData, [id]: value });
     
-        // Check if passwords match only if both fields are filled
         if (id === "password" || id === "confirmPassword") {
             setPasswordChanged(true);
             const password = id === "password" ? value : formData.password;
@@ -116,38 +113,171 @@ export default function Profile() {
             console.log(error);
         }
     }
+
     return (
-        <div className="p-3 max-w-lg mx-auto">
-            <h1 className="text-3xl font-semibold text-center my-7">Profile</h1>
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4 shadow-xl rounded-lg">
-                <input type="file" ref={fileRef} hidden accept="image/*" onChange={(event) => setImage(event.target.files[0]) } />
-                <img src={formData.profilePicture || currentUser.profilePicture} alt="profile image" className="h-24 w-24 self-center cursor-pointer rounded-full object-cover hover:opacity-50" onClick={()=> fileRef.current.click()}/>
-                <p className="text-sm self-center">
-                    {imageError ? (<span className ="text-red-700">Error uploading image ("File size must be less than 2 MB")</span>) : imagePercent>0 && imagePercent < 100 ? (
-                    <span className="text-slate-700">{`Uploading: ${imagePercent} %`}</span>) : imagePercent === 100 ? (
-                    <span className="text-green-700">Image uploaded sucessfully</span>) : ("")}
-                </p>
-                <div className="flex flex-col p-10 gap-4 rounded-lg">
-                    <p>UserName:</p>
-                    <input defaultValue={currentUser.username} type="text" id="username" placeholder="Username" className="border border-slate-200 rounded-lg p-3" readOnly />
-                    <p>Email:</p>
-                    <input defaultValue={currentUser.email} type="text" id="email" placeholder="Email" className="border border-slate-200 rounded-lg p-3" readOnly />
-                    <p>Password:</p>
-                    <input type="password" id="password" placeholder="Change Password" className="border border-slate-200 rounded-lg p-3" onChange={handleChange}/>
-                    <p>Confirm Password:</p>
-                    <input type="password" id="confirmPassword" placeholder="Confirm Password" className="border border-slate-200 rounded-lg p-3" onChange={handleChange}/>
-                    {isPasswordChanged ?(doesPasswordMatch ? <p className="text-green-700">Password matched!</p> : <p className="text-red-700">Password does not match!</p>) : ""}
-                    <button className="bg-orange-600 text-white p-3 mt-2 rounded-lg uppercase hover:opacity-90 disabled:opacity-80">{loading ? "Loading...":"Update"}</button>
-                    <div className="flex flex-row justify-between">
-                        <span className="text-red-700 cursor-pointer" onClick={handleDeleteAccount}>Delete Account</span>
-                        <span className="text-red-700 cursor-pointer" onClick={handleSignOut}>Sign out</span>
-                    </div>
-                    <p className="text-red-700 mt-5">{error && "Something went wrong!"}</p>
-                    <p className="text-green-700 mt-5">{updateSucess && "Updated Information Successfully!"}</p>
-                </div>
-                
-            </form>
+        <div className="min-h-screen relative">
+            <div className="main">
+                <div className="gradient"></div>
+            </div>
             
+            <div className="relative z-10 max-w-2xl mx-auto p-6 pt-24">
+                <div className="profile-container p-8">
+                    <div className="text-center mb-8">
+                        <h1 className="text-3xl font-bold text-white mb-2">Account Settings</h1>
+                        <p className="text-white/70">Manage your profile and preferences</p>
+                    </div>
+
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        {/* Profile Picture Section */}
+                        <div className="text-center">
+                            <input 
+                                type="file" 
+                                ref={fileRef} 
+                                hidden 
+                                accept="image/*" 
+                                onChange={(event) => setImage(event.target.files[0])} 
+                            />
+                            <div className="relative inline-block">
+                                <img 
+                                    src={formData.profilePicture || currentUser.profilePicture} 
+                                    alt="profile" 
+                                    className="h-32 w-32 rounded-full object-cover border-4 border-white/30 shadow-xl cursor-pointer hover:border-white/50 transition-all duration-300" 
+                                    onClick={() => fileRef.current.click()}
+                                />
+                                <div className="absolute bottom-2 right-2 w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center cursor-pointer shadow-lg hover:scale-110 transition-transform duration-300"
+                                     onClick={() => fileRef.current.click()}>
+                                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                </div>
+                            </div>
+                            
+                            {imageError ? (
+                                <p className="error-text text-sm mt-2">
+                                    Error uploading image (File size must be less than 2 MB)
+                                </p>
+                            ) : imagePercent > 0 && imagePercent < 100 ? (
+                                <div className="mt-4">
+                                    <div className="w-full bg-white/20 rounded-full h-2">
+                                        <div className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full transition-all duration-300" 
+                                             style={{width: `${imagePercent}%`}}></div>
+                                    </div>
+                                    <p className="text-white/70 text-sm mt-2">Uploading: {imagePercent}%</p>
+                                </div>
+                            ) : imagePercent === 100 ? (
+                                <p className="success-text text-sm mt-2">Image uploaded successfully!</p>
+                            ) : null}
+                        </div>
+
+                        {/* Form Fields */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label className="block text-white/80 text-sm font-medium mb-2">Username</label>
+                                <input 
+                                    defaultValue={currentUser.username} 
+                                    type="text" 
+                                    id="username" 
+                                    className="profile-input" 
+                                    readOnly 
+                                />
+                            </div>
+                            
+                            <div>
+                                <label className="block text-white/80 text-sm font-medium mb-2">Email</label>
+                                <input 
+                                    defaultValue={currentUser.email} 
+                                    type="email" 
+                                    id="email" 
+                                    className="profile-input" 
+                                    readOnly 
+                                />
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label className="block text-white/80 text-sm font-medium mb-2">New Password</label>
+                                <input 
+                                    type="password" 
+                                    id="password" 
+                                    placeholder="Enter new password" 
+                                    className="profile-input" 
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            
+                            <div>
+                                <label className="block text-white/80 text-sm font-medium mb-2">Confirm Password</label>
+                                <input 
+                                    type="password" 
+                                    id="confirmPassword" 
+                                    placeholder="Confirm new password" 
+                                    className="profile-input" 
+                                    onChange={handleChange}
+                                />
+                            </div>
+                        </div>
+
+                        {isPasswordChanged && (
+                            <div className="text-center">
+                                {doesPasswordMatch ? (
+                                    <p className="success-text">Passwords match!</p>
+                                ) : (
+                                    <p className="error-text">Passwords do not match!</p>
+                                )}
+                            </div>
+                        )}
+
+                        <button 
+                            type="submit"
+                            disabled={loading || (isPasswordChanged && !doesPasswordMatch)}
+                            className="auth-button"
+                        >
+                            {loading ? (
+                                <div className="flex items-center justify-center">
+                                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    Updating...
+                                </div>
+                            ) : 'Update Profile'}
+                        </button>
+
+                        {/* Action Buttons */}
+                        <div className="flex justify-between items-center pt-6 border-t border-white/20">
+                            <button 
+                                type="button"
+                                className="danger-button"
+                                onClick={handleDeleteAccount}
+                            >
+                                Delete Account
+                            </button>
+                            <button 
+                                type="button"
+                                className="danger-button"
+                                onClick={handleSignOut}
+                            >
+                                Sign Out
+                            </button>
+                        </div>
+
+                        {/* Status Messages */}
+                        {error && (
+                            <div className="bg-red-500/20 border border-red-500/30 rounded-xl p-4">
+                                <p className="error-text text-center">Something went wrong!</p>
+                            </div>
+                        )}
+                        
+                        {updateSucess && (
+                            <div className="bg-green-500/20 border border-green-500/30 rounded-xl p-4">
+                                <p className="success-text text-center">Profile updated successfully!</p>
+                            </div>
+                        )}
+                    </form>
+                </div>
+            </div>
         </div>
     )
 }
